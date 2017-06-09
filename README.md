@@ -1,7 +1,35 @@
-# Frequency Analysis of Words
+# Частотный анализ слов
 
-[TODO. There will be project description]
+Скрипт принимает на вход путь до текстового файла и выводит в консоль десять самых популярных слов в этом файле в порядке убывания частоты.
 
-# Project Goals
+# Как запустить
 
-The code is written for educational purposes. Training course for web-developers - [DEVMAN.org](https://devman.org)
+Скрипт требует для своей работы установленного интерпретатора Python версии 3.5
+
+Положите текстовый файл в ту же папку, где лежит файл скрипта bars.py
+
+Запуск на Linux:
+
+```#!bash
+$ python lang_frequency.py eugene_onegin.txt
+#
+#слово и количество его упоминаний:
+#
+#о 13217
+#е 11482
+#а 9888
+#н 9538
+#и 8277
+#т 7819
+#с 6701
+#л 6310
+#в 6072
+#р 5844
+```
+
+Запуск на Windows происходит аналогично.
+
+# Цели проекта
+
+Код создан в учебных целях. В рамках учебного курса по веб-разработке - [DEVMAN.org](https://devman.org)
+
