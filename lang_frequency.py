@@ -1,40 +1,27 @@
 import sys
 import os.path
 import re
-import operator
+import collections
 
 
 def load_data(filepath):
-    f = open(filepath, 'r', encoding='windows-1251')
-    return f
-    f.close()
+    with open(filepath, 'r', encoding='windows-1251') as f:
+        for line in f:
+            yield line
 
 
-def get_10_most_frequent_words(text):
-    dict_word_frequency = {}
+def get_most_frequent_words(text):
     pattern = r'[а-я]|[a-z]+'
+    dict_word_frequency = collections.Counter()
 
     for line in text:
-        words = re.findall(pattern, line, re.IGNORECASE)
+        line = line.lower()
+        words = re.findall(pattern, line)
+
         for word in words:
-            word = word.lower()
-            if word in dict_word_frequency:
-                dict_word_frequency[word] += 1
-            else:
-                dict_word_frequency[word] = 1
+            dict_word_frequency[word] += 1
 
-    sorted_dict = sorted(dict_word_frequency.items(), key=operator.itemgetter(1), reverse=True)
-
-    counter = 0
-    print('\nслово и количество его упоминаний:\n')
-    for record in sorted_dict:
-        word = record[0]
-        count_of_word = record[1]
-
-        print(word, count_of_word)
-        counter += 1
-        if counter >= 10:
-            break
+    return dict_word_frequency
 
 
 def start_script(argv_list):
@@ -56,7 +43,14 @@ def start_script(argv_list):
         return None
 
     text = load_data(filepath)
-    get_10_most_frequent_words(text)
+    most_frequent_words = get_most_frequent_words(text)
+
+    print('\nслово и количество его упоминаний:\n')
+    for record in most_frequent_words.most_common(10):
+        word = record[0]
+        count_of_word = record[1]
+
+        print(word, count_of_word)
 
 
 if __name__ == '__main__':
