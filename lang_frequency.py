@@ -5,8 +5,8 @@ import collections
 
 
 def load_data(filepath):
-    with open(filepath, 'r', encoding='windows-1251') as f:
-        for line in f:
+    with open(filepath, 'r', encoding='windows-1251') as file:
+        for line in file:
             yield line
 
 
