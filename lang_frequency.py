@@ -1,28 +1,27 @@
 import sys
 import os.path
 import re
-from collections import Counter
+import collections
 
 
 def load_data(filepath):
     with open(filepath, 'r', encoding='windows-1251') as file:
-        for line in file:
-            yield line
+        return file.read()
 
 
 def get_most_frequent_words(text):
     pattern = r'[а-я]|[a-z]+'
-    dict_word_frequency = Counter()
+    dict_word_frequency = collections.Counter()
+    text = text.lower()
+    words = re.findall(pattern, text)
 
-    for line in text:
-        line = line.lower()
-        words = re.findall(pattern, line)
-        dict_word_frequency += Counter(words)    
+    for word in words:
+        dict_word_frequency[word] += 1
 
     return dict_word_frequency
 
 
-def start_script(argv_list):
+def start_script(argv_list, quantity=10):
     if len(argv_list) < 2:
         print('Вас привествует программа подсчета слов в тексте\n'
               'Для того чтоб узнать как работает программа введите: python lang_frequency.py --help или python3 lang_frequency.py --help')
@@ -44,7 +43,7 @@ def start_script(argv_list):
     most_frequent_words = get_most_frequent_words(text)
 
     print('\nслово и количество его упоминаний:\n')
-    for record in most_frequent_words.most_common(10):
+    for record in most_frequent_words.most_common(quantity):
         word = record[0]
         count_of_word = record[1]
 
