@@ -1,7 +1,7 @@
 import sys
 import os.path
 import re
-import collections
+from collections import Counter
 
 
 def load_data(filepath):
@@ -11,14 +11,9 @@ def load_data(filepath):
 
 def get_most_frequent_words(text):
     pattern = r'[а-я]|[a-z]+'
-    dict_word_frequency = collections.Counter()
-    text = text.lower()
-    words = re.findall(pattern, text)
+    words = re.findall(pattern, text.lower())
 
-    for word in words:
-        dict_word_frequency[word] += 1
-
-    return dict_word_frequency
+    return Counter(words)
 
 
 def start_script(argv_list, quantity=10):
