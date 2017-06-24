@@ -3,23 +3,24 @@ import os.path
 import re
 from collections import Counter
 
-
 def load_data(filepath):
     with open(filepath, 'r', encoding='windows-1251') as file:
         return file.read()
 
-
 def get_most_frequent_words(text):
     pattern = r'[а-я]|[a-z]+'
     words = re.findall(pattern, text.lower())
-
     return Counter(words)
 
+def output(most_frequent_words, quantity=10):
+    print('\nслово и количество его упоминаний:\n')
+    for record in most_frequent_words.most_common(quantity):
+        word, count_of_word = record
+        print(word, count_of_word)
 
-def start_script(argv_list, quantity=10):
+def get_filepath(argv_list):
     if len(argv_list) < 2:
-        print('Вас привествует программа подсчета слов в тексте\n'
-              'Для того чтоб узнать как работает программа введите: python lang_frequency.py --help или python3 lang_frequency.py --help')
+        print('Вас привествует программа подсчета слов в тексте\n')
         return None
 
     if argv_list[1] == '--help':
@@ -30,21 +31,18 @@ def start_script(argv_list, quantity=10):
     filepath = argv_list[1]
 
     if not os.path.exists(filepath):
-        print('Ошибка: программа не может найти текстовый файл\n'
-              'Воспользуйтесь помощью (--help)')
+        print('Ошибка: программа не может найти текстовый файл\n')
         return None
-
-    text = load_data(filepath)
-    most_frequent_words = get_most_frequent_words(text)
-
-    print('\nслово и количество его упоминаний:\n')
-    for record in most_frequent_words.most_common(quantity):
-        word = record[0]
-        count_of_word = record[1]
-
-        print(word, count_of_word)
+    else:
+        return filepath
 
 
 if __name__ == '__main__':
     argv_list = sys.argv
-    start_script(argv_list)
+    filepath = get_filepath(argv_list)
+    try:
+        text = load_data(filepath)
+        most_frequent_words = get_most_frequent_words(text)
+        output(most_frequent_words)    
+    except TypeError:
+        print('Для того чтоб узнать как работает программа введите: python lang_frequency.py --help или python3 lang_frequency.py --help')
