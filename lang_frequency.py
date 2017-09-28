@@ -4,30 +4,33 @@ import re
 from collections import Counter
 
 
+def handling_args(argv_list):
+    if len(argv_list) < 2:
+        print('Вас привествует программа подсчета слов в тексте\n'
+              'Для того чтоб узнать как работает программа введите: '
+              'python lang_frequency.py --help или python3 lang_frequency.py --help')
+        return None
+
+    arg = argv_list[1]
+
+    if arg == '--help':
+        return print_help()
+
+    if not os.path.exists(arg):
+        print('Ошибка: программа не может найти текстовый файл\n')
+        return None
+    filepath = arg
+
+    data = load_data(filepath)
+    most_frequent_words = get_most_frequent_words(data)
+    records = word_count(most_frequent_words, quantity=10)
+    output_most_frequent_words(records)
+
+
 def print_help():
     print(
-        'Для того чтоб узнать как работает программа введите: python lang_frequency.py --help или python3 lang_frequency.py --help')
-
-
-def get_filepath(argv_list):
-    if len(argv_list) < 2:
-        print('Вас привествует программа подсчета слов в тексте\n')
-        print_help()
-        return None
-
-    if argv_list[1] == '--help':
-        print('\nЧтобы запустить программу, нужно ввести в консоли: <интерпретатор> <скрипт> <текстовый файл>\n'
-              'Наример: python3 lang_frequency.py war_and_peace.txt\n')
-        return None
-
-    filepath = argv_list[1]
-
-    if not os.path.exists(filepath):
-        print('Ошибка: программа не может найти текстовый файл\n')
-        print_help()
-        return None
-    else:
-        return filepath
+        '\nЧтобы запустить программу, нужно ввести в консоли: <интерпретатор> <скрипт> <текстовый файл>\n'
+        'Наример: python3 lang_frequency.py war_and_peace.txt\n')
 
 
 def load_data(filepath):
@@ -35,9 +38,9 @@ def load_data(filepath):
         return file.read()
 
 
-def get_most_frequent_words(text):
+def get_most_frequent_words(data):
     pattern = r'[а-я]|[a-z]+'
-    words = re.findall(pattern, text.lower())
+    words = re.findall(pattern, data.lower())
     return Counter(words)
 
 
@@ -45,17 +48,7 @@ def word_count(most_frequent_words, quantity=10):
     return most_frequent_words.most_common(quantity)
 
 
-def output():
-    argv_list = sys.argv
-    filepath = get_filepath(argv_list)
-
-    if filepath is None:
-        return None
-
-    text = load_data(filepath)
-    most_frequent_words = get_most_frequent_words(text)
-    records = word_count(most_frequent_words)
-
+def output_most_frequent_words(records):
     print('\nслово и количество его упоминаний:\n')
     for record in records:
         word, count_of_word = record
@@ -63,4 +56,5 @@ def output():
 
 
 if __name__ == '__main__':
-    output()
+    argv_list = sys.argv
+    handling_args(argv_list)
