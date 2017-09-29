@@ -21,8 +21,8 @@ def handling_args(argv_list):
         return None
     filepath = arg
 
-    data = load_data(filepath)
-    most_frequent_words = get_most_frequent_words(data)
+    text = load_data(filepath)
+    most_frequent_words = get_most_frequent_words(text)
     records = word_count(most_frequent_words, quantity=10)
     output_most_frequent_words(records)
 
@@ -38,9 +38,9 @@ def load_data(filepath):
         return file.read()
 
 
-def get_most_frequent_words(data):
+def get_most_frequent_words(text):
     pattern = r'[а-я]|[a-z]+'
-    words = re.findall(pattern, data.lower())
+    words = re.findall(pattern, text.lower())
     return Counter(words)
 
 
